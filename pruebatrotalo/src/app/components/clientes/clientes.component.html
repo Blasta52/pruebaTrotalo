@@ -1,0 +1,156 @@
+<app-header></app-header>
+<app-loading *ngIf="isLoading"></app-loading>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+    <!-- Button trigger modal -->
+    <div class="text-right p-3">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createModalCliente">
+            Crear Cliente
+        </button>
+    </div>
+  
+    <!-- Modal -->
+    <div class="modal fade" id="createModalCliente" tabindex="-1" role="dialog" aria-labelledby="modalCrearTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <form novalidate method="post" (submit)="createClient()" [formGroup]="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="modalCrearTitle">Crear Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input formControlName="cliente" type="text" class="form-control" placeholder="Cliente">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
+                        <p *ngIf="enviado && form.controls.cliente.hasError('required')" class="text-danger w-100 mb-0">Debes Ingresar un cliente</p>
+                        <p *ngIf="enviado && form.controls.cliente.hasError('pattern')" class="text-danger w-100 mb-0">No puede contener espacios ni caracteres especiales</p>
+                    </div>
+
+                    <div class="alert alert-danger" *ngIf="err != ''">
+                        {{ err }}
+                    </div>
+
+                    <div class="alert alert-success" *ngIf="success != ''">
+                        {{ success }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Crear Cliente</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editModalCliente" tabindex="-1" role="dialog" aria-labelledby="modalEditarTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <form novalidate method="post" (submit)="updateClient()" [formGroup]="formEdit">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarTitle">Editar Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input formControlName="cliente" type="text" class="form-control" placeholder="Cliente">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
+                        <p *ngIf="enviado && formEdit.controls.cliente.hasError('required')" class="text-danger w-100 mb-0">Debes Ingresar un usuario</p>
+                        <p *ngIf="enviado && formEdit.controls.cliente.hasError('pattern')" class="text-danger w-100 mb-0">No puede contener espacios ni caracteres especiales</p>
+                    </div>
+
+                    <div class="alert alert-danger" *ngIf="err != ''">
+                        {{ err }}
+                    </div>
+
+                    <div class="alert alert-success" *ngIf="success != ''">
+                        {{ success }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModalCliente" tabindex="-1" role="dialog" aria-labelledby="modalEliminarTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body text-center">
+                    <h3>Eliminar cliente</h3>
+                    <p>¿Está seguro?</p>
+
+                    <div class="alert alert-danger" *ngIf="err != ''">
+                        {{ err }}
+                    </div>
+
+                    <div class="alert alert-success" *ngIf="success != ''">
+                        {{ success }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button (click)="deleteClient()" type="submit" class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Listado de clientes</h1>
+            <br>
+            <table class="table">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha de creación</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+
+                <tr *ngFor="let cliente of clientes">
+                    <td>{{ cliente.id_cliente }}</td>
+                    <td>{{ cliente.cliente }}</td>
+                    <td>{{ cliente.created_at }}</td>
+                    <td><button (click)="setFormEdit(cliente)" data-toggle="modal" data-target="#editModalCliente" class="btn btn-warning"><i class="fas fa-edit"></i></button></td>
+                    <td><button (click)="setDeleteClient(cliente.id_cliente)" data-toggle="modal" data-target="#deleteModalCliente" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></td>
+                </tr>
+
+            </table>
+
+          </div><!-- /.col -->
+          
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,43 @@
+<app-loading *ngIf="isLoading"></app-loading>
+
+<section class="login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <form novalidate method="post" (submit)="login()" [formGroup]="form">
+                    <div class="input-group mb-3">
+                        <input formControlName="contratista" type="text" class="form-control" placeholder="Usuario">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
+                        <p *ngIf="enviado && form.controls.contratista.hasError('required')" class="text-danger w-100 mb-0">Debes Ingresar un usuario</p>
+                        <p *ngIf="enviado && form.controls.contratista.hasError('pattern')" class="text-danger w-100 mb-0">No puede contener espacios ni caracteres especiales</p>
+                    </div>
+                    <div class="alert alert-danger" *ngIf="err != ''">
+                        {{ err }}
+                    </div>
+
+                    <div class="alert alert-success" *ngIf="success != ''">
+                        {{ success }}
+                    </div>
+                    <div class="row">
+                        <!-- /.col -->
+                        <div class="col-12 pt-2">
+                            <button type="submit" class="btn btn-primary btn-block">INICIAR </button>
+                        </div>
+                        <div class="col-12 pt-2">
+                            <button type="button" (click)="registrarse()" class="btn btn-primary btn-block">REGISTRARSE </button>
+                            <p class="login-box-msg">
+                                Regístrate para iniciar sesión
+                            </p>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+</section>
